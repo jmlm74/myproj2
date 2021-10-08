@@ -1,0 +1,14 @@
+asgiref==3.4.1
+Django==3.2.8
+django-crispy-forms==1.13.0
+django-debug-toolbar==3.2.2
+django-filter==21.1
+django-tables2==2.4.1
+mysql-connector-python==8.0.26
+protobuf==3.18.1
+python-http-client==3.3.3
+pytz==2021.3
+sendgrid==6.8.2
+six==1.16.0
+sqlparse==0.4.2
+starkbank-ecdsa==2.0.0
