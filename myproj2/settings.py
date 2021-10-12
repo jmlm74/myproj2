@@ -43,8 +43,11 @@ INSTALLED_APPS = [
 
     'debug_toolbar',
     'crispy_forms',
+    'phonenumber_field',
+    
     'app_user.apps.AppUserConfig',
     'app_utilities.apps.AppUtilitiesConfig',
+    'app_utilisateurs.apps.AppUtilisateursConfig',
 
 ]
 
