@@ -12,6 +12,7 @@ urlpatterns = [
     path('signup/', apuv.signup, name='signup'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('app_user/', include('app_user.urls')),
+    path('app_utilisateurs/',include('app_utilisateurs.urls')),
 ]
 
 
