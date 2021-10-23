@@ -1,9 +1,15 @@
+import itertools
 from django.shortcuts import render
+from django_tables2 import RequestConfig, tables
+from django.utils.html import format_html
 
 from sortable_listview import SortableListView
+from django_filters import FilterSet, CharFilter, ChoiceFilter, ModelChoiceFilter
 
 from .models import Utilisateur
+from app_utilities.views import render_col_del_generic, render_is_active_generic
 # Create your views here.
+
 class UTilisateurListView(SortableListView):
     """
     Users list --> SortableListView package
@@ -26,7 +32,7 @@ class UTilisateurListView(SortableListView):
     paginate_by = 5
     template_name = 'app_utilisateurs/list.html'
     model = Utilisateur
-    
+
     def get_queryset(self):
         order = self.request.GET.get('sort')
         if order is None:
@@ -42,3 +48,54 @@ class UTilisateurListView(SortableListView):
         context['sort'] = self.request.GET.get('sort')
         context['title'] = 'Liste Utilisateurs'
         return context
+
+
+class UtilisateurFilter(FilterSet):
+    util_nom = CharFilter(field_name='util_first_name', lookup_expr='icontains')
+
+    class Meta:
+        model = Utilisateur
+        fields = ['util_nom']
+
+
+def utilisateur_list_view(request):
+    context = {'title': "Gestion utilisateurs"}
+    if request.method == "POST":
+        return render(request, "app_utilisateurs/list2.html", context=context)
+    if request.method == "GET":
+        utilisateurs = Utilisateur.objects.all().order_by('util_last_name')
+        myfilter = UtilisateurFilter(request.GET, queryset=utilisateurs)
+        utilisateurs = myfilter.qs
+        utilisateurs_table = UTilisateurListTable(utilisateurs, prefix='1-')
+        RequestConfig(request, paginate={"per_page": 15}).configure(utilisateurs_table)
+        context['utilisateurs_table'] = utilisateurs_table
+        context['myfilter'] = myfilter
+        return render(request, "app_utilisateurs/list2.html", context=context)
+
+class UTilisateurListTable(tables.Table):
+
+    counter = tables.columns.Column(empty_values=(), orderable=False, verbose_name="#",
+                                    attrs={'td': {'class': 'cat_counter_col'}})
+    col_del = tables.columns.Column(empty_values=(),
+                                    orderable=False,
+                                    verbose_name="",
+                                    attrs={'td': {'class': 'line_col_del_col'}})
+    util_is_active = tables.columns.Column(attrs={'td': {'class': 'line_enable_col'}})
+
+    class Meta:
+        model = Utilisateur
+        fields = ('counter', 'id', 'util_first_name', 'util_last_name', 'util_phone1', 'util_is_active', 'col_del')
+        attrs = {'class': 'table table-striped table-hover'}
+
+    def render_counter(self):
+        self.row_counter = getattr(self, 'row_counter', itertools.count())
+        return next(self.row_counter) + 1
+
+    def render_col_del(self, *args, **kwargs):
+        var = render_col_del_generic(str(kwargs['record'].pk))
+        return format_html(var)
+
+    # noinspection PyMethodMayBeStatic
+    def render_util_is_active(self, *args, **kwargs):
+        var = render_is_active_generic(kwargs['value'])
+        return format_html(var)

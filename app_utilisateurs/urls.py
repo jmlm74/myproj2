@@ -11,5 +11,6 @@ from app_utilisateurs import views as auv
 
 app_name = 'app_utilisateurs'
 urlpatterns = [
-    path('list/', login_required(auv.UTilisateurListView.as_view()), name='list'),
+    # path('list/', login_required(auv.UTilisateurListView.as_view()), name='list'),
+    path('list/', login_required(auv.utilisateur_list_view), name='list'),
 ]

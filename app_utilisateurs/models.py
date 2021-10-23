@@ -15,7 +15,7 @@ class Utilisateur(models.Model):
     util_is_active = models.BooleanField(verbose_name="Actif", default=True)
     util_created_at = models.DateTimeField(auto_now_add=True)
     util_updated_at = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
         verbose_name_plural = "Utilisateurs"
         constraints = [models.UniqueConstraint(fields=['util_first_name', 'util_last_name'], name="unique_utilisateur")]

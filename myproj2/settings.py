@@ -43,8 +43,11 @@ INSTALLED_APPS = [
 
     'debug_toolbar',
     'crispy_forms',
+    'widget_tweaks',
     'phonenumber_field',
-    
+    'django_tables2',
+    'django_filters',
+
     'app_user.apps.AppUserConfig',
     'app_utilities.apps.AppUtilitiesConfig',
     'app_utilisateurs.apps.AppUtilisateursConfig',
@@ -75,6 +78,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'app_utilities.context_processors.get_appname',
+                'app_utilities.context_processors.display_application_name',
             ],
         },
     },
@@ -144,3 +149,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+app_name = "Applijmlm"

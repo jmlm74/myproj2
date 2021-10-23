@@ -1,0 +1,37 @@
+{# list users  #}
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load render_table from django_tables2 %}
+{% block body_block %}
+<div class="my_body">
+    <div class="container">
+        {% include 'partials/_title.html' %}
+        <div class="row mt-3">
+            <div class="col-5 col-md-2">
+                <h3>Utilisateurs</h3>
+            </div>
+            <div class="col-4 col-md-2">
+                <button id="create-heading" class="btn btn-primary" type="button" name="button">
+                    <i class="fa fa-plus mr-2"></i>Créer
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 d-flex justify-content-end mt-3 mb-3">
+                <form method="get">
+                    Nom : {% render_field myfilter.form.util_nom|attr:"size:20" %}
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+            </div>
+        </div>
+        <div class="row align-items-top justify-content-center text-center col-12 small">
+       {% render_table utilisateurs_table %}
+        
+        {% include 'partials/_pagination_listview_jm.html' %}
+        </div>
+
+        {% include 'partials/_back.html' %}
+    </div>
+</div>
+{% endblock body_block %}

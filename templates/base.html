@@ -27,14 +27,7 @@
 </head>
 <body>
     {% include 'partials/_nav.html' %}
-    <h1>My site</h1>
-    {%  if user.is_authenticated %}
-        <strong>You are logged in as {{ user.username }}</strong>
-    {% else %}
-        <strong>You are not logged in</strong>
-    {% endif %}
-
-
+   
     {% block body_block %}
     {% endblock body_block %}
     {% include 'partials/_footer.html' %}
