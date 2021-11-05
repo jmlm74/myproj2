@@ -4,15 +4,17 @@
 {% load widget_tweaks %}
 {% load render_table from django_tables2 %}
 {% block body_block %}
-<div class="my_body">
+<div class="my_body" id="main">
     <div class="container">
         {% include 'partials/_title.html' %}
+        {% include 'partials/_modal.html' %}
+        {% include 'app_utilisateurs/dialogboxes/create.html' %}
         <div class="row mt-3">
             <div class="col-5 col-md-2">
                 <h3>Utilisateurs</h3>
             </div>
             <div class="col-4 col-md-2">
-                <button id="create-heading" class="btn btn-primary" type="button" name="button">
+                <button id="create-heading" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary" type="button" name="button">
                     <i class="fa fa-plus mr-2"></i>Créer
                 </button>
             </div>
@@ -34,4 +36,13 @@
         {% include 'partials/_back.html' %}
     </div>
 </div>
+<script>
+    const formURLCreate = "{%  url 'app_utilisateurs:display' 0 %}"
+    {#  the 0 at the end --> avoid 2 urls with and without parameters #}
+    {# const formURLDisplay = "{%  url 'app_utilisateurs:display' 0 %}" #}
+    const formURLDisplay = "{%  url 'app_utilisateurs:display' 0 %}"
+    const formURLUpdate = "{%  url 'app_utilisateurs:display' 0 %}"
+    const formURLRemove = "{%  url 'app_utilisateurs:display' 0 %}"
+    const returnURL = "{% url 'app_utilisateurs:list' %}"
+</script>
 {% endblock body_block %}

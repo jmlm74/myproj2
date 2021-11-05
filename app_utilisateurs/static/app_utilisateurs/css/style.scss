@@ -1,0 +1,38 @@
+
+
+.util_counter_col, .util_id, .line_enable_col{
+    width: 4%;
+    max-width: 4%;
+}
+.line_col_del_col{
+    width: 15%;
+    max-width: 15%;
+}
+
+.Update-class{
+    margin-right: 15px;
+    margin-left: 15px;
+}
+
+[data-tooltip]:before {
+    /* needed - do not touch */
+    content: attr(data-tooltip);
+    position: absolute;
+    opacity: 0;
+    /* customizable */
+    transition: all 0.15s ease;
+    padding: 10px;
+    color: #333;
+    border-radius: 10px;
+    box-shadow: 2px 2px 1px silver; }
+  
+[data-tooltip]:hover:before {
+    /* needed - do not touch */
+    opacity: 1;
+    /* customizable */
+    background: lightblue;
+    margin-top: -1%;
+    margin-left: 1%; }
+
+[data-tooltip]:not([data-tooltip-persistent]):before {
+    pointer-events: none; }

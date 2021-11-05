@@ -1,6 +1,6 @@
 
 from django.contrib import admin
-from django.urls import path,include
+from django.urls import path, include
 import debug_toolbar
 
 from app_user import views as apuv
@@ -12,7 +12,5 @@ urlpatterns = [
     path('signup/', apuv.signup, name='signup'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('app_user/', include('app_user.urls')),
-    path('app_utilisateurs/',include('app_utilisateurs.urls')),
+    path('app_utilisateurs/', include('app_utilisateurs.urls')),
 ]
-
-

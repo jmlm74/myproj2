@@ -41,7 +41,8 @@
             </ul>
             <div class="col-md-3 text-end">
                 <form class="form-inline ">
-                <a href="{% url 'logout' %}" class="btn btn-outline-secondary mr-2">Log out</a>
+                <span style="color:white; text-decoration: underline;"> {{user}}</span>
+                <a  href="{% url 'logout' %}" class="btn btn-outline-secondary mr-2">Log out</a>
                 </form>
             </div>
             {% else %}

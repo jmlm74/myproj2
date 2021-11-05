@@ -1,0 +1,22 @@
+{% load widget_tweaks %}
+<div class="modal-header">
+    <h3>{{ title }}</h3>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+       <!--  <span aria-hidden="true">+</span> -->
+    </button>
+</div>
+<div class="modal-body">
+    <h2 class="text-center">{{ utilisateur.util_civil|default_if_none:"" }} {{ utilisateur.util_first_name|default_if_none:"" }} {{ utilisateur.util_last_name|default_if_none:"" }}</h2>
+    <hr class="bold-hr" />
+    <p class="">
+        <strong>email : </strong>{{utilisateur.util_email|default_if_none:""}}
+    </p>
+    <p class="">
+        <strong>Téléphone : </strong>{{ utilisateur.util_phone1 }}
+    </p class="">
+        <strong>Actif : </strong>{% if utilisateur.util_is_active %}Oui{% else %}Non{% endif %}
+    <p>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary"  data-bs-dismiss="modal">Close</button>
+</div>

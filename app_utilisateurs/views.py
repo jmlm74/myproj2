@@ -2,9 +2,11 @@ import itertools
 from django.shortcuts import render
 from django_tables2 import RequestConfig, tables
 from django.utils.html import format_html
+from django.urls import reverse_lazy
 
 from sortable_listview import SortableListView
 from django_filters import FilterSet, CharFilter, ChoiceFilter, ModelChoiceFilter
+from bootstrap_modal_forms.generic import BSModalCreateView, BSModalReadView, BSModalUpdateView, BSModalDeleteView
 
 from .models import Utilisateur
 from app_utilities.views import render_col_del_generic, render_is_active_generic
@@ -75,7 +77,9 @@ def utilisateur_list_view(request):
 class UTilisateurListTable(tables.Table):
 
     counter = tables.columns.Column(empty_values=(), orderable=False, verbose_name="#",
-                                    attrs={'td': {'class': 'cat_counter_col'}})
+                                    attrs={'td': {'class': 'util_counter_col'}})
+    id = tables.columns.Column(attrs={'td': {'class': 'util_id'}})
+    util_is_active = tables.columns.Column(attrs={'td': {'class': 'util_is_active'}})
     col_del = tables.columns.Column(empty_values=(),
                                     orderable=False,
                                     verbose_name="",
@@ -99,3 +103,14 @@ class UTilisateurListTable(tables.Table):
     def render_util_is_active(self, *args, **kwargs):
         var = render_is_active_generic(kwargs['value'])
         return format_html(var)
+
+
+class UtilisateurDisplay(BSModalReadView):
+    template_name = 'app_utilisateurs/dialogboxes/display.html'
+    model = Utilisateur
+
+    def get_context_data(self, **kwargs):
+        context = super(UtilisateurDisplay, self).get_context_data(**kwargs)
+        context['utilisateur'] = Utilisateur.objects.get(pk=self.kwargs['pk'])
+        context['title'] = f"Utilisateur N° {self.kwargs['pk']}"
+        return context

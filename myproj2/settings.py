@@ -17,6 +17,10 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 MEDIA_DIR = os.path.join(BASE_DIR, 'files')
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+
+DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap4.html"
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -41,12 +45,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_extensions',
     'debug_toolbar',
     'crispy_forms',
     'widget_tweaks',
-    'phonenumber_field',
+    'sass_processor',
     'django_tables2',
     'django_filters',
+    'bootstrap_modal_forms',
 
     'app_user.apps.AppUserConfig',
     'app_utilities.apps.AppUtilitiesConfig',
@@ -135,7 +141,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+STATIC_ROOT = BASE_DIR / 'assets'
+SASS_PROCESSOR_ROOT = STATIC_ROOT
+
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    STATIC_DIR,
+]
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'sass_processor.finders.CssFinder',
+]
 
 # MEDIA
 MEDIA_ROOT = MEDIA_DIR
@@ -149,6 +166,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-
-app_name = "Applijmlm"
