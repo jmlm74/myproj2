@@ -13,9 +13,10 @@
             <div class="col-5 col-md-2">
                 <h3>Utilisateurs</h3>
             </div>
-            <div class="col-4 col-md-2">
-                <button id="create-heading" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary" type="button" name="button">
-                    <i class="fa fa-plus mr-2"></i>Créer
+            <div class="col-4 col-md-2">    
+                <button id="createUtilisateur" class="btn btn-primary" type="button" name="button">
+                <!--    <button id="create-heading" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary" type="button" name="button"> -->
+                <i class="fa fa-plus mr-2"></i>Créer
                 </button>
             </div>
         </div>
@@ -37,7 +38,7 @@
     </div>
 </div>
 <script>
-    const formURLCreate = "{%  url 'app_utilisateurs:display' 0 %}"
+    const formURLCreate = "{%  url 'app_utilisateurs:create_utilisateur'%}"
     {#  the 0 at the end --> avoid 2 urls with and without parameters #}
     {# const formURLDisplay = "{%  url 'app_utilisateurs:display' 0 %}" #}
     const formURLDisplay = "{%  url 'app_utilisateurs:display' 0 %}"

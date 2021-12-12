@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+django-extensions = "*"
+django-debug-toolbar = "*"
+django-crispy-forms = "*"
+django-widget-tweaks = "*"
+django-sass-processor = "*"
+django-tables2 = "*"
+django-filter = "*"
+django-bootstrap-modal-forms = "*"
+
+[dev-packages]
+flake8 = "*"
+
+[requires]
+python_version = "3.9"

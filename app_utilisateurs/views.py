@@ -4,52 +4,13 @@ from django_tables2 import RequestConfig, tables
 from django.utils.html import format_html
 from django.urls import reverse_lazy
 
-from sortable_listview import SortableListView
+# from sortable_listview import SortableListView
 from django_filters import FilterSet, CharFilter, ChoiceFilter, ModelChoiceFilter
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalReadView, BSModalUpdateView, BSModalDeleteView
 
 from .models import Utilisateur
+from .forms import CreateUtilisateurForm
 from app_utilities.views import render_col_del_generic, render_is_active_generic
-# Create your views here.
-
-class UTilisateurListView(SortableListView):
-    """
-    Users list --> SortableListView package
-    The pagination has been reviewed.
-    the fields (visible or not) are treated in the template
-    The querysets are different depending the user profile (get_queryset)
-    """
-    context = {'title': "Liste Utilisateurs"}
-    context_object_name = "utilisateurs"
-
-    allowed_sort_fields = {"id": {'default_direction': '', 'verbose_name': 'Id'},
-                           "util_first_name": {'default_direction': '', 'verbose_name': 'Prenom'},
-                           "util_last_name": {'default_direction': '', 'verbose_name': 'Nom'},
-                           "util_email": {'default_direction': '', 'verbose_name': 'Email'},
-                           "util_phone1": {'default_direction': '', 'verbose_name': 'Phone'},
-                           "util_is_active": {'default_direction': '', 'verbose_name': 'Actif'},
-                           }
-
-    default_sort_field = 'util_last_name'  # mandatory
-    paginate_by = 5
-    template_name = 'app_utilisateurs/list.html'
-    model = Utilisateur
-
-    def get_queryset(self):
-        order = self.request.GET.get('sort')
-        if order is None:
-            order = self.default_sort_field
-        if self.request.user.is_superuser:
-            return Utilisateur.objects.all().order_by(order)
-        else:
-            return Utilisateur.objects.filter(util_is_active=True)\
-                .order_by(order)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['sort'] = self.request.GET.get('sort')
-        context['title'] = 'Liste Utilisateurs'
-        return context
 
 
 class UtilisateurFilter(FilterSet):
@@ -114,3 +75,9 @@ class UtilisateurDisplay(BSModalReadView):
         context['utilisateur'] = Utilisateur.objects.get(pk=self.kwargs['pk'])
         context['title'] = f"Utilisateur N° {self.kwargs['pk']}"
         return context
+
+class UtilisateurCreateView(BSModalCreateView):
+    template_name = 'app_utilisateurs/create_utilisateur.html'
+    form_class = CreateUtilisateurForm
+    success_message = 'Success: Book was created.'
+    success_url = reverse_lazy('list')

@@ -9,7 +9,10 @@ if ((document.getElementById('mgrmgmt')) || (document.getElementById('main'))) {
         $(function () {
             console.log("Jquery loaded!!!!!")
             
-    
+            $("#createUtilisateur").modalForm({
+                formURL: formURLCreate,
+                modalID: "#create-modal"
+            });
    
         });
    
