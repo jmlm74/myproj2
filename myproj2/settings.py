@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'app_user.apps.AppUserConfig',
     'app_utilities.apps.AppUtilitiesConfig',
     'app_utilisateurs.apps.AppUtilisateursConfig',
+    'app_materiels.apps.AppMaterielsConfig',
 
 ]
 
