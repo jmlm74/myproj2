@@ -14,5 +14,7 @@ urlpatterns = [
     # path('list/', login_required(auv.UTilisateurListView.as_view()), name='list'),
     path('list/', login_required(auv.utilisateur_list_view), name='list'),
     path('display/<int:pk>', login_required(auv.UtilisateurDisplay.as_view()), name='display'),
-    path('create/', auv.UtilisateurCreateView.as_view(), name='create_utilisateur'),
+    path('create/', login_required(auv.UtilisateurCreateView.as_view()), name='create_utilisateur'),
+    path('delete/<int:pk>', login_required(auv.UtilisateurDeleteView.as_view()), name='delete'),
+    path('update/<int:pk>', login_required(auv.UtilisateurUpdateView.as_view()), name='update'),
 ]

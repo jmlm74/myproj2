@@ -1,15 +1,17 @@
 import itertools
-from django.shortcuts import render
+from django.http.response import HttpResponseRedirect
+from django.shortcuts import redirect, render
 from django_tables2 import RequestConfig, tables
 from django.utils.html import format_html
 from django.urls import reverse_lazy
+from django.contrib import messages
 
 # from sortable_listview import SortableListView
 from django_filters import FilterSet, CharFilter, ChoiceFilter, ModelChoiceFilter
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalReadView, BSModalUpdateView, BSModalDeleteView
 
 from .models import Utilisateur
-from .forms import CreateUtilisateurForm
+from .forms import CreateUtilisateurForm,UpdateUtilisateurForm
 from app_utilities.views import render_col_del_generic, render_is_active_generic
 
 
@@ -25,7 +27,9 @@ def utilisateur_list_view(request):
     context = {'title': "Gestion utilisateurs"}
     if request.method == "POST":
         return render(request, "app_utilisateurs/list2.html", context=context)
+
     if request.method == "GET":
+        list(messages.get_messages(request))
         utilisateurs = Utilisateur.objects.all().order_by('util_last_name')
         myfilter = UtilisateurFilter(request.GET, queryset=utilisateurs)
         utilisateurs = myfilter.qs
@@ -59,9 +63,6 @@ class UTilisateurListTable(tables.Table):
     def render_col_del(self, *args, **kwargs):
         var = render_col_del_generic(str(kwargs['record'].pk))
         return format_html(var)
-
-    # noinspection PyMethodMayBeStatic
-    def render_util_is_active(self, *args, **kwargs):
         var = render_is_active_generic(kwargs['value'])
         return format_html(var)
 
@@ -76,8 +77,66 @@ class UtilisateurDisplay(BSModalReadView):
         context['title'] = f"Utilisateur N° {self.kwargs['pk']}"
         return context
 
+
+class UtilisateurUpdateView(BSModalUpdateView):
+    template_name = 'app_utilisateurs/dialogboxes/create_utilisateur.html'
+    form_class = UpdateUtilisateurForm
+    success_message = 'Modification utilisateur OK !'
+    success_url = reverse_lazy('app_utilisateurs:list')
+    model = Utilisateur
+
+    def get_context_data(self, **kwargs):
+        context = super(UtilisateurUpdateView, self).get_context_data(**kwargs)
+        context['title'] = "Modification utilisateur"
+        context['button_title'] = "Update"
+        return context
+
+
 class UtilisateurCreateView(BSModalCreateView):
-    template_name = 'app_utilisateurs/create_utilisateur.html'
+    template_name = 'app_utilisateurs/dialogboxes/create_utilisateur.html'
     form_class = CreateUtilisateurForm
-    success_message = 'Success: Book was created.'
-    success_url = reverse_lazy('list')
+    success_message = 'Creation utilisateur OK !'
+    success_url = reverse_lazy('app_utilisateurs:list')
+
+    def get_context_data(self, **kwargs):
+        context = super(UtilisateurCreateView, self).get_context_data(**kwargs)
+        context['title'] = "Création utilisateur"
+        context['button_title'] = "Create"
+        return context
+
+        
+    def post(self, request, *args, **kwargs):
+        list(messages.get_messages(request))
+        myform = CreateUtilisateurForm(request.POST)
+        if self.request.is_ajax():
+            return redirect(self.success_url)
+        if myform.is_valid():
+            print("Ici créer l'utilisateur!")  
+            util_civil = myform.cleaned_data['util_civil']
+            util_first_name = myform.cleaned_data['util_first_name']
+            util_last_name = myform.cleaned_data['util_last_name']
+            util_email = myform.cleaned_data['util_email']
+            util_phone1 = myform.cleaned_data['util_phone1']
+            util_is_active = myform.cleaned_data['util_is_active']
+            Utilisateur.objects.create(util_civil=util_civil,
+                                       util_first_name=util_first_name,
+                                       util_last_name=util_last_name,
+                                       util_email=util_email,
+                                       util_phone1=util_phone1,
+                                       util_is_active=util_is_active)
+        else:
+            list(messages.get_messages(request))
+            messages.add_message(request, messages.ERROR, "Erreur création : @ mail doit être unique ")
+        return redirect(self.success_url)
+    
+class UtilisateurDeleteView(BSModalDeleteView):
+    template_name = 'app_utilisateurs/dialogboxes/delete_utilisateur.html'
+    model = Utilisateur
+    success_message = "Supression utilisateur OK !"
+    success_url = reverse_lazy('app_utilisateurs:list')
+
+    def get_context_data(self, **kwargs):
+        context = super(UtilisateurDeleteView, self).get_context_data(**kwargs)
+        context['utilisateur'] = Utilisateur.objects.get(pk=self.kwargs['pk'])
+        context['title'] = f"Suppression Utilisateur N° {self.kwargs['pk']}"
+        return context

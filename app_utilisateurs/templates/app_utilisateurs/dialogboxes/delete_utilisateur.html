@@ -1,0 +1,19 @@
+
+{% load widget_tweaks %}
+<form method="post" action="">
+  {% csrf_token %}
+    <div class="modal-header">
+        <h3>Suppression utilisaeur N° {{ utilisateur.id }}</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        </button>
+    </div>
+
+    <div class="modal-body">
+    <p class="delete-text">Supprimer utilisater {{ utilisateur.util_first_name }} {{ utilisateur.util_last_name }}</p>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Annuler</button>
+    <button type="submit" id="delete-btn" class="btn btn-danger">Supprimer</button>
+  </div>
+</form>

@@ -5,9 +5,10 @@
             <ul class="messageslist">
                 {% for message in messages %}
                     {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                        <li class="error">
+                        <li class="error" style="color: red;">
+                            Erreur !!! : 
                     {% else %}
-                        <li>
+                        <li> 
                     {% endif %}
                     {{ user_created }} {{message}}</li>
                 {% endfor %}
@@ -20,7 +21,7 @@
         <ul class="errorslist">
             {% for error in errors %}
                 {% if error|slice:"0:4" != 'Line' %}
-                    <li>{{error}}</li>
+                    <li  style="color: red;">{{error}}</li>
                 {% endif %}
             {% endfor %}
         </ul>
